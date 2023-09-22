@@ -38,6 +38,9 @@ import LineIcon from './../images/line.svg';
 import EllipseIcon from './../images/ellipse.svg';
 import TriangleIcon from './../images/triangle.svg';
 
+import  UndoManager from 'undo-manager';
+import Left from '../images/rotate-left-solid.svg';
+import Right from '../images/rotate-right-solid.svg';
 const initFileInfo = {
   file: { name: 'whiteboard' },
   totalPages: 1,
@@ -89,6 +92,7 @@ const Paintboard = ({
   onConfigChange = (data, event, canvas) => {},
   onSaveCanvasState = (data, event, canvas) => {},
 }) => {
+  const [undoManager, setUndoManager] = useState(new UndoManager());
   const [board, setBoard] = useState();
   const [canvasObjectsPerPage, setCanvasObjectsPerPage] = useState({});
   const [canvasDrawingSettings, setCanvasDrawingSettings] = useState({
@@ -271,19 +275,37 @@ const Paintboard = ({
     });
 
     canvas.on('object:added', (event) => {
-      onObjectAdded(event.target.toJSON(), event, canvas);
-      onCanvasChange(event.target.toJSON(), event, canvas);
+      undoManager.add({
+        undo: () => {
+          canvas.remove(event.target);
+        },
+        redo: () => {
+          canvas.add(event.target);
+        },
+      });
     });
-
     canvas.on('object:removed', (event) => {
-      onObjectRemoved(event.target.toJSON(), event, canvas);
-      onCanvasChange(event.target.toJSON(), event, canvas);
+      undoManager.add({
+        undo: () => {
+          canvas.add(event.target);
+        },
+        redo: () => {
+          canvas.remove(event.target);
+        },
+      });
     });
-
     canvas.on('object:modified', (event) => {
       onObjectModified(event.target.toJSON(), event, canvas);
       onCanvasChange(event.target.toJSON(), event, canvas);
     });
+  }
+
+  function handleUndo() {
+    undoManager.undo();
+  }
+  
+  function handleRedo() {
+    undoManager.redo();
   }
 
   function getFullData(canvas) {
@@ -637,6 +659,16 @@ const Paintboard = ({
               </ButtonS>
             </ToolbarItemS>
           )}
+          <ToolbarItemS>
+          <ButtonS type="button" onClick={handleUndo}>
+          <img src={Left} alt="left" />
+</ButtonS>
+</ToolbarItemS>
+<ToolbarItemS>
+<ButtonS type="button" onClick={handleRedo}>
+<img src={Right} alt="Right" />
+</ButtonS>
+</ToolbarItemS>
         </ToolbarS>
         <ZoomBarS>
           {!!enabledControls.ZOOM && (
