@@ -1,84 +1,118 @@
-# react-sketch-panel
+# React Sketch Panel
 
-<div>
-  <h2>
-    fork from react-whiteboard-pdf
-    add Paintboard component
-    <br />
-  </h2>
-</div>
+A powerful **React sketching and drawing library** built on top of **react-whiteboard-pdf**, featuring the new **Paintboard** component for interactive sketch creation, freehand drawing, image editing, and customizable canvas controls.
 
-<br />
+Designed for AI image generation tools, drawing applications, educational platforms, annotation systems, and creative web applications.
 
-![Example](./app-example.png)
+![React Sketch Panel](./app-example.png)
 
-Check App demo here:
+---
 
-# App [DEMO](https://statuesque-muffin-fb224e.netlify.app/)
+# 🚀 Live Demo
 
-<br/>
+**Demo:** https://statuesque-muffin-fb224e.netlify.app/
 
-<!-- ## If you like this project you can help us with $1,000,000 donation or any other amount
+---
 
-github: [github.com/sponsors/spiridonov-oa](https://github.com/sponsors/spiridonov-oa)
-patreon: [patreon.com/OlegSpiridonov](https://patreon.com/OlegSpiridonov) -->
+# Overview
 
-## Compatibility
+React Sketch Panel extends the functionality of **react-whiteboard-pdf** by introducing the **Paintboard** component with enhanced sketching capabilities.
 
-React 17
+The library provides an intuitive drawing experience with configurable tools, multiple canvas sizes, zoom controls, image export, and customizable drawing settings while remaining lightweight and easy to integrate into any React application.
 
-<br/>
+---
 
-## Installation
+# Features
 
-```shell
+- 🎨 Interactive Paintboard component
+- ✏️ Freehand drawing
+- 🩹 Eraser tool
+- 🖌️ Adjustable brush size
+- 🎨 Color picker
+- 🖼️ Image upload
+- 📤 Export canvas as image
+- 📤 Export image without background
+- 🔍 Zoom controls
+- 📂 Save & restore canvas state using JSON
+- 📏 Multiple canvas sizes
+- ⚡ Built with Fabric.js
+- 🧩 Highly customizable toolbar
+
+---
+
+# Technologies Used
+
+- React 17+
+- Fabric.js
+- Styled Components
+- Sass
+- File Saver
+- React PDF
+- Babel
+
+---
+
+# Compatibility
+
+- React 17 or later
+
+---
+
+# Installation
+
+Using npm
+
+```bash
 npm install react-sketch-panel
 ```
 
-or
+Using Yarn
 
-```shell
+```bash
 yarn add react-sketch-panel
 ```
 
-<br/>
+---
 
-## Usage
+# Basic Usage
 
-```javascript
-const App = () => {
-  return (
-    <div>
-      <Paintboard />
-    </div>
-  );
-};
+```jsx
+import { Paintboard } from "react-sketch-panel";
+
+function App() {
+  return <Paintboard />;
+}
+
+export default App;
 ```
 
-You can change default props
+---
 
-```javascript
-import { Paintboard } from 'react-sketch-panel';
+# Advanced Usage
 
-const sizes = ['512x512','800x600','600x800','1920x1080']
+```jsx
+import { Paintboard } from "react-sketch-panel";
 
-const App = () => {
+const sizes = [
+  "512x512",
+  "800x600",
+  "600x800",
+  "1920x1080"
+];
+
+function App() {
   return (
     <Paintboard
-      mode={'sketch'} // optional
-      sizes={sizes} // :string[] if mode set to 'sketch', sizes prop must be passed 
+      mode="sketch"
+      sizes={sizes}
       maxWidth={512}
       maxHeight={512}
-      // default parameters
       drawingSettings={{
-        brushWidth: 5, // :number (optional) (default: 5) - brush size for drawing
-        background: false, // :boolean (optional) (default: false) - polkadot as background picture
-        currentMode: modes.PENCIL, //
-        currentColor: '#000000',
         brushWidth: 5,
-        fill: false, // if true, square, rectangle, and triangle will be filled with current color
+        background: false,
+        currentColor: "#000000",
+        fill: false
       }}
-      // default controls
       controls={{
         PENCIL: true,
         MOVE: true,
@@ -91,22 +125,14 @@ const App = () => {
         FILES: true,
         SAVE_AS_IMAGE: true,
         SAVE_AS_IMAGE_WITHOUT_BACKGROUNDIMAGE: true,
-        ZOOM: true,
+        ZOOM: true
       }}
       settings={{
         zoom: 1,
         minZoom: 0.05,
         maxZoom: 9.99,
-        contentJSON: null, // JSON to render in canvas
+        contentJSON: null
       }}
-      fileInfo={{
-        file: { name: 'Desk 1' },
-        totalPages: 1,
-        currentPageNumber: 0,
-        currentPage: '',
-      }}
-      onObjectAdded={(addedObject) => {}}
-      onObjectRemoved={(removedObject) => {}}
       onObjectAdded={(data, event, canvas) => {}}
       onObjectRemoved={(data, event, canvas) => {}}
       onZoom={(data, event, canvas) => {}}
@@ -120,21 +146,150 @@ const App = () => {
       onSaveCanvasState={(data, event, canvas) => {}}
     />
   );
-};
+}
+
+export default App;
 ```
 
-## Development:
+---
 
-```shell
-npm i
+# Configuration
+
+## Drawing Settings
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| brushWidth | Number | 5 | Drawing brush size |
+| background | Boolean | false | Show dotted background |
+| currentColor | String | #000000 | Active drawing color |
+| fill | Boolean | false | Fill drawn shapes |
+
+---
+
+## Controls
+
+Enable or disable toolbar buttons individually.
+
+Available controls include:
+
+- PENCIL
+- MOVE
+- ERASERDRAW
+- CLEAR
+- FILL
+- BRUSH
+- COLOR_PICKER
+- DEFAULT_COLORS
+- FILES
+- SAVE_AS_IMAGE
+- SAVE_AS_IMAGE_WITHOUT_BACKGROUNDIMAGE
+- ZOOM
+
+---
+
+## Settings
+
+| Property | Description |
+|-----------|-------------|
+| zoom | Initial zoom level |
+| minZoom | Minimum zoom |
+| maxZoom | Maximum zoom |
+| contentJSON | Restore saved canvas state |
+
+---
+
+## Event Callbacks
+
+The Paintboard component provides several callback functions.
+
+```jsx
+onObjectAdded()
+onObjectRemoved()
+onZoom()
+onImageUploaded()
+onPDFUploaded()
+onPDFUpdated()
+onPageChange()
+onOptionsChange()
+onSaveCanvasAsImage()
+onConfigChange()
+onSaveCanvasState()
+```
+
+Each callback receives:
+
+```jsx
+(data, event, canvas)
+```
+
+allowing complete access to the underlying Fabric.js canvas.
+
+---
+
+# Development
+
+Clone the repository
+
+```bash
+git clone https://github.com/HetalRupareliya91/react-sketch-panel.git
+```
+
+Navigate to the project
+
+```bash
+cd react-sketch-panel
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Start the development server
+
+```bash
 npm start
 ```
 
-## Author:
+Build the project
 
-<!-- [spiridonov-oa](https://github.com/spiridonov-oa) -->
+```bash
+npm run build
+```
 
-## Contributors:
+Run tests
 
-<!-- Thanks for your help in building this project -->
-<!-- [rodionspi](https://github.com/rodionspi) -->
+```bash
+npm test
+```
+
+---
+
+# Project Structure
+
+```text
+src/
+│
+├── components/
+├── lib/
+├── styles/
+└── index.js
+
+dist/
+
+README.md
+package.json
+```
+
+---
+
+# License
+
+This project is intended for educational and commercial use.
+
+---
+
+# Credits
+
+This project is based on **react-whiteboard-pdf** and extends it with the **Paintboard** component and additional sketching capabilities.
